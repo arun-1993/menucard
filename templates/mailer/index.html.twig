@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for message in app.flashes('message') %}
+    <div class="alert alert-success">
+        <h3>{{ message }}</h3>
+    </div>
+    {% endfor %}
+    <section class="contact-section">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-6 p-0">
+					<!-- Map -->
+					<div class="map">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10500.899077973765!2d2.291351494396901!3d48.85392413737362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sEiffel%20Tower!5e0!3m2!1sen!2sbd!4v1649074109733!5m2!1sen!2sbd" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+				</div>
+				<div class="col-lg-6 p-0">
+					<div class="contact-warp">
+						<div class="section-title mb-0">
+							<h2>Waiter Contact</h2>
+						</div>
+						<p>Would you like to tell the waiter about your orders? On this page you can use our contact form to get in touch with our qualified service staff. It doesn't matter if something is missing or if there are extra requests for our dishes. Praise, suggestions and criticism are also welcome. Do not hesitate to contact us.</p>
+                        {{ form(emailForm) }}
+						{# <form class="contact-from">
+							<div class="row">
+								<div class="col-md-6">
+									<input type="text" placeholder="Your name">
+								</div>
+								<div class="col-md-6">
+									<input type="text" placeholder="Your e-mail">
+								</div>
+								<div class="col-md-12">
+									<input type="text" placeholder="Subject">
+									<textarea placeholder="Message"></textarea>
+									<button class="site-btn">send message</button>
+								</div>
+							</div>
+						</form> #}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

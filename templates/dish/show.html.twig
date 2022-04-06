@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<br />
+<div class="container text-center">
+    {# <div class="row">
+        <div class="col-lg-6">
+            <h2><span>{{ dish.name }}</span>!</h2>
+            <p>Try it now, {{ dish.description }} for only {{ dish.price }}&euro;! Exclusive as Dish of the Day. </p>
+            <a href="{{ path('menu') }}" class="site-btn">Menu Card</a>
+            <a href="{{ path('order',{id: dish.id}) }}" class="site-btn sb-c2">Order</a>
+        </div>
+        <div class="col-lg-6">
+            <img src="{{ asset('images/' ~ dish.image) }}" alt="{{ dish.name }}">
+        </div>
+    </div> #}
+    <h1 class="">{{ dish.name }}</h1>
+    <br />
+    <img src="{{ asset('images/' ~ dish.image) }}" alt="{{ dish.name }}">
+    <br /><br />
+    <h5>Try it now<br />{{ dish.description }}<br />For only {{ dish.price }}&euro;!</h5>
+    <br />
+    <a href="{{ path('menu') }}" class="site-btn">Back</a>
+    <a href="{{ path('order',{id: dish.id}) }}" class="site-btn sb-c2">Order</a>
+</div>
+{% endblock %}

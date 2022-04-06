@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\User;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
+class RegistrationController extends AbstractController
+{
+    /**
+     * @Route("/reg", name="reg")
+     */
+    public function reg(Request $request, UserPasswordHasherInterface $passhasher, ValidatorInterface $validator): Response
+    {
+        $regform = $this->createFormBuilder()
+            ->add('username', TextType::class, [
+                'label' => 'Employee'
+            ])
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'required' => true,
+                'first_options' => ['label' => 'Password'],
+                'second_options' => ['label' => 'Confirm Password']
+            ])
+            ->add('register', SubmitType::class)
+            ->getForm()
+        ;
+
+        $regform->handleRequest($request);
+        
+        if($regform->isSubmitted() && $regform->isValid())
+        { 
+            $input = $regform->getData();
+            
+            $user = new User();
+            $user->setUsername($input['username']);
+
+            $user->setPassword(
+                $passhasher->hashPassword($user, $input['password'])
+            );
+
+            $user->setRawPassword($input['password']);
+
+            $errors = $validator->validate($user);
+            
+            if(count($errors) > 0)
+            {
+                return $this->render('registration/index.html.twig', [
+                    'regform' => $regform->createView(),
+                    'errors' => $errors
+                ]);
+            }
+
+            else
+            {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+            }
+
+            return $this->redirect($this->generateUrl('home'));
+        }
+
+        return $this->render('registration/index.html.twig', [
+            'regform' => $regform->createView(),
+            'errors' => null
+        ]);
+    }
+}
